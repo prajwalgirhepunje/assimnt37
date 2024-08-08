@@ -11,61 +11,123 @@
             padding: 0px;
             box-sizing: border-box;
         }
-        .heading{
-            text-align: center;
-        }
-        .todo-item{
-            border: 2px dotted black;
-            padding: 8px;
-            margin: 10px;
-            border-radius: 4px;
-            background-color:#ff4da6;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-        }
-        .delete-btn{
-            background-color: #1a1aff;
-            color: white;
-            border-radius: 25px;
-            border: none;
+        h1{
+        display: block;
+        text-align: center;
+    }
+    .addTask-btn{
+        display: flex;
+        justify-content: center;
+        margin: 25px auto;
+        background-color: RED;
+        color: #FFF;
+        height: 30px;
+        width: 100px;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
 
-        }
+    }
+   .input-task{
+    height: 30px;
+    width: 500px;
+   }
+
+    
+    .add{
+        height: 40px;
+        border-radius: 10px; 
+        margin-left: 20px;
+        margin-top: 5px;
+        font-size: 20px;
+        background-color:#255bbe;
+        color: white;
+    }
+    .containter{
+        height: 30px;
+        font-size: 25px;
+        border: 2px dotted black;
+        padding-top: 10px;
+        margin-top: 10px;
+        border-radius: 15px;
+         background-color:#ff4da6;
+         color: white;
+         display: flex;
+         justify-content: space-between;
+         padding: 8px 6px;
+
+    }
+    .btn{
+        height: 25px;
+        width: 80px;
+        margin-right: 25px;
+        margin-left: 10px;
+        background-color:white;
+        border-radius: 7px;
+        border: none;
+        background-color:#1a1aff;
+        color: #FFF;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
  <i> <u><h1 class="heading">Todo App</h1></u></i>
-    <div id="tasks-container">
-
-    </div>
+ <div id="addTask-btn">
+    <input id="taskinput" type="text" class="input-task"/>
+    <button class="addTask-btn" onclick="addTask()" >Add Task</button>
+</div>
+<div id="task-container">
+</div>
     <script>
-       const TaskList=["go to market",
-       "go to hospital",
-       "buy the smartphone" ,
-       "go to the gym"];
+           const tasks = [];
 
-       function taskloder(){
-           const TaskContainer = document.getElementById("tasks-container");
-           TaskContainer.innerHTML = "";
+function loadFromLocalStorage(){
+    const allTasks = JSON.parse(localStorage.getItem('allTasks'));
 
-           for(const task of TaskList){
-               TaskContainer.innerHTML +=
-           `
-             <div class="todo-item">
-               ${task}
-               <button class="delete-btn">delete</button>
-             </div> 
-           `
-           }
-       }
-       taskloder();
+    if(allTasks){
+        tasks.push(...allTasks)
+    }
+    loadTasks();
+}
+loadFromLocalStorage();
 
-       function deleteItem(task){
-                 const taskindex=TaskList.indexOf(task);
-                 TaskList.splice(taskindex,1);
+function loadTasks (){
+  localStorage.setItem('allTasks', JSON.stringify(tasks));
 
-                 taskloder();
-       }
-    </script>
+    const taskcontainer = document.getElementById(`task-container`);
+    taskcontainer.innerHTML = ``;
+
+    for(const task of tasks)
+    {
+        taskcontainer.innerHTML += `
+        <div class = "containter">
+            
+             ${task}
+            <button class = "btn" onclick = "deletatsk('${task}')">
+                        delete
+                </button>
+            </div>
+            `
+    }
+      }
+      
+    function deletatsk(task){
+         const taskindex = tasks.indexOf(task);
+         tasks.splice(taskindex, 1);
+         loadTasks();
+    }
+
+    function addTask(){
+        const taskinputElement = document.getElementById("taskinput");
+        const task = taskinputElement.value;
+        if(!task){
+            alert("enter a task");
+            return;
+        }
+        tasks.push(task);
+        loadTasks();
+        taskinputElement.value = '';
+    }</script>
 </body>
 </html>
