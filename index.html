@@ -4,8 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>todo app</title>
+    <style>
+        body{
+            background-color: #66ff66;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .heading{
+            text-align: center;
+        }
+        .todo-item{
+            border: 2px dotted black;
+            padding: 8px;
+            margin: 10px;
+            border-radius: 4px;
+            background-color:#ff4da6;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete-btn{
+            background-color: #1a1aff;
+            color: white;
+            border-radius: 25px;
+            border: none;
+
+        }
+    </style>
 </head>
 <body>
-    
+ <i> <u><h1 class="heading">Todo App</h1></u></i>
+    <div id="tasks-container">
+
+    </div>
+    <script>
+       const TaskList=["go to market",
+       "go to hospital",
+       "buy the smartphone" ,
+       "go to the gym"];
+
+       function taskloder(){
+           const TaskContainer = document.getElementById("tasks-container");
+           TaskContainer.innerHTML = "";
+
+           for(const task of TaskList){
+               TaskContainer.innerHTML +=
+           `
+             <div class="todo-item">
+               ${task}
+               <button class="delete-btn">delete</button>
+             </div> 
+           `
+           }
+       }
+       taskloder();
+
+       function deleteItem(task){
+                 const taskindex=TaskList.indexOf(task);
+                 TaskList.splice(taskindex,1);
+
+                 taskloder();
+       }
+    </script>
 </body>
 </html>
